@@ -9,7 +9,7 @@ http.createServer(function(req, res) {
 	res.setHeader('Content-Type', 'application/json');
 	res.write(JSON.stringify(stats));
 	res.end()
-}).listen(3000, function() {
+}).listen(port, function() {
 	console.log("server started");
 });
 
