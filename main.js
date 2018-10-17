@@ -49,11 +49,14 @@ function dailyScrape() {
 		        .fromFile(playerURLs)
 		        .then((playerURLsObj) => {
 		            stats = formatter.format(jsonObj, advJsonObj, playerURLsObj); //reassign stats to newly scraped and formatted stats
-		        });
-		    });
-		});
-
-
+		             fs.writeFile("formattedStatsObject.js", `let formattedStatsObjectJSON = ${stats}\n module.exports = formattedStatsObjectJSON`, function(err) {
+                			if(err){
+                    			console.log(err);
+                			};
+            			});
+		        	});
+		    	});
+			});
 		console.log("scraped at " + scrapeDate);
 	})
 }
@@ -61,6 +64,6 @@ function dailyScrape() {
 dailyScrape();*/
 
 let CronJob = require('cron').CronJob;
-new CronJob('45 * * * *', function() {
+new CronJob('05,15 * * * *', function() {
 	dailyScrape();
 }, null, true, 'America/Denver');
