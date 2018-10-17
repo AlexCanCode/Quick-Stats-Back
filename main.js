@@ -1,9 +1,22 @@
 'use strict' 
 //for server
 const http = require('http');
-const stats = require('./formattedStatsObject.js');
+let stats = require('./formattedStatsObject.js'); //need to change this everytime dailyScrape runs..
 const port = process.env.PORT || 3000; //CHANGE BACK TO 8080? 
 
+//for scraping job
+const fs = require('fs'); 
+const {PythonShell} = require('python-shell');
+const scriptPath = "./scraper/webScraper.py";
+
+//for formating 
+const formatter = require('./format.js');
+const csvFilePath = './stats/players.csv';
+const advCsvFilePath = './stats/Advplayers.csv';
+const playerURLs = './stats/URLplayers.csv';
+const csv = require('csvtojson');
+
+//create server
 http.createServer(function(req, res) {
 	res.statusCode = 200;
 	res.setHeader('Content-Type', 'application/json');
@@ -12,11 +25,6 @@ http.createServer(function(req, res) {
 }).listen(port, function() {
 	console.log("server started");
 });
-
-//for scraping job
-const fs = require('fs'); //Unused module? 
-const {PythonShell} = require('python-shell');
-const scriptPath = "./scraper/webScraper.py";
 
 function dailyScrape() {
 	const pyshell = new PythonShell(scriptPath);
@@ -30,8 +38,21 @@ function dailyScrape() {
 		if(err){
 			throw err;
 		}
-		const finalFormattedStats = require('./format.js'); //need to import the written JSON file from the formatter.
-		const finalStatObjectJSON = JSON.stringify(finalFormattedStats);
+		//get csvs from scrape and format to be sent out
+		csv()
+		.fromFile(csvFilePath)
+		.then((jsonObj) => {
+		    csv()
+		    .fromFile(advCsvFilePath)
+		    .then((advJsonObj) => {
+		        csv()
+		        .fromFile(playerURLs)
+		        .then((playerURLsObj) => {
+		            stats = JSON.stringify(formatter.format(jsonObj, advJsonObj, playerURLsObj)); //reassign stats to newly scraped and formatted stats
+		        });
+		    });
+		});
+
 
 		console.log("scraped at " + scrapeDate);
 	})
@@ -39,16 +60,7 @@ function dailyScrape() {
 
 dailyScrape();
 
-
-
 let CronJob = require('cron').CronJob;
 new CronJob('0 3 * * *', function() {
 	dailyScrape();
 }, null, true, 'America/Denver');
-
-
-
-
-
-
-
