@@ -61,6 +61,6 @@ function dailyScrape() {
 dailyScrape();
 
 let CronJob = require('cron').CronJob;
-new CronJob('0 3 * * *', function() {
+new CronJob('35 * * * *', function() {
 	dailyScrape();
 }, null, true, 'America/Denver');
