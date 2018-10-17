@@ -48,7 +48,7 @@ function dailyScrape() {
 		        csv()
 		        .fromFile(playerURLs)
 		        .then((playerURLsObj) => {
-		            stats = JSON.stringify(formatter.format(jsonObj, advJsonObj, playerURLsObj)); //reassign stats to newly scraped and formatted stats
+		            stats = formatter.format(jsonObj, advJsonObj, playerURLsObj); //reassign stats to newly scraped and formatted stats
 		        });
 		    });
 		});
