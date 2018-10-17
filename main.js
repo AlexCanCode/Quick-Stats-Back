@@ -55,7 +55,7 @@ function dailyScrape() {
 		             fs.writeFile("./testFile.js", `let formattedStatsObjectJSON = ${JSON.stringify(stats)}\n module.exports = formattedStatsObjectJSON`, function(err, data) {
                 			if(err){
                     			console.log(err);
-                			};
+                			}
                 			else {
                 				console.log(data);
                 			}
