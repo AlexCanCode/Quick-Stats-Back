@@ -49,7 +49,7 @@ function dailyScrape() {
 		        .fromFile(playerURLs)
 		        .then((playerURLsObj) => {
 		            stats = formatter.format(jsonObj, advJsonObj, playerURLsObj); //reassign stats to newly scraped and formatted stats
-		             fs.writeFile("formattedStatsObject.js", `let formattedStatsObjectJSON = ${stats}\n module.exports = formattedStatsObjectJSON`, function(err) {
+		             fs.writeFileSync("formattedStatsObject.js", `let formattedStatsObjectJSON = ${stats}\n module.exports = formattedStatsObjectJSON`, function(err) {
                 			if(err){
                     			console.log(err);
                 			};
@@ -64,6 +64,6 @@ function dailyScrape() {
 dailyScrape();*/
 
 let CronJob = require('cron').CronJob;
-new CronJob('05,15 * * * *', function() {
+new CronJob('55,05 * * * *', function() {
 	dailyScrape();
 }, null, true, 'America/Denver');
