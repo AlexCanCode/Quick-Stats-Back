@@ -16,6 +16,8 @@ const advCsvFilePath = './stats/Advplayers.csv';
 const playerURLs = './stats/URLplayers.csv';
 const csv = require('csvtojson');
 
+dailyScrape(); //set json object to most updated stats when the server is spun up
+
 //create server
 http.createServer(function(req, res) {
 	res.statusCode = 200;
@@ -49,7 +51,8 @@ function dailyScrape() {
 		        .fromFile(playerURLs)
 		        .then((playerURLsObj) => {
 		            stats = formatter.format(jsonObj, advJsonObj, playerURLsObj); //reassign stats to newly scraped and formatted stats
-		             fs.writeFileSync("formattedStatsObject.js", `let formattedStatsObjectJSON = ${stats}\n module.exports = formattedStatsObjectJSON`, function(err) {
+		            console.log("writting file");
+		             fs.writeFileSync("formattedStatsObject.js", `let formattedStatsObjectJSON = ${JSON.stringify(stats)}\n module.exports = formattedStatsObjectJSON`, function(err) {
                 			if(err){
                     			console.log(err);
                 			};
@@ -60,8 +63,6 @@ function dailyScrape() {
 		console.log("scraped at " + scrapeDate);
 	})
 }
-/*
-dailyScrape();*/
 
 let CronJob = require('cron').CronJob;
 new CronJob('55,05 * * * *', function() {
