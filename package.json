@@ -2,9 +2,9 @@
   "name": "quick-stats",
   "version": "1.0.0",
   "description": "quick stats backend",
-  "start": "node main.js",
   "main": "/main.js",
   "scripts": {
+    "start": "node main.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Alex Richards",
