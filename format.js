@@ -13,31 +13,32 @@
 6. formattedStatsJSON --> no duplicates, ready to be hashed and searched (requires team names to be added back in for "tot" players)*/
 
 //Convert stats file from csv to JSON 
+
 const fs = require("fs");
 const csvFilePath = './stats/players.csv';
 const advCsvFilePath = './stats/Advplayers.csv';
 const playerURLs = './stats/URLplayers.csv'
 const csv = require('csvtojson');
 
+
 csv()
-    .fromFile(csvFilePath)
-    .then((jsonObj) => {
+.fromFile(csvFilePath)
+.then((jsonObj) => {
+    csv()
+    .fromFile(advCsvFilePath)
+    .then((advJsonObj) => {
         csv()
-        .fromFile(advCsvFilePath)
-        .then((advJsonObj) => {
-            csv()
-            .fromFile(playerURLs)
-            .then((playerURLsObj) => {
-                const formattedStatsJSON = JSON.stringify(format(jsonObj, advJsonObj, playerURLsObj));
-                fs.writeFile("formattedStatsObject.js", `let formattedStatsObjectJSON = ${formattedStatsJSON}\n module.exports = formattedStatsObjectJSON`, function(err) {
-                    if(err){
-                        console.log(err);
-                    };
-                });
+        .fromFile(playerURLs)
+        .then((playerURLsObj) => {
+            const formattedStatsJSON = JSON.stringify(format(jsonObj, advJsonObj, playerURLsObj));
+            fs.writeFile("formattedStatsObject.js", `let formattedStatsObjectJSON = ${formattedStatsJSON}\n module.exports = formattedStatsObjectJSON`, function(err) {
+                if(err){
+                    console.log(err);
+                };
             });
         });
     });
-
+});
 
 //remove unwanted stats, add in PER stat
 function format(arr, advArr, urlArr) {  
@@ -127,3 +128,7 @@ function removeDuplicateNames(arr) {
     });
     return populateDuplicatePlayerTeams(cleanStats, duplicatePlayerTeams); 
 };
+
+module.exports.format = format;
+module.exports.populateDuplicatePlayerTeams = populateDuplicatePlayerTeams;
+module.exports.removeDuplicateNames = removeDuplicateNames;
