@@ -57,8 +57,8 @@ function dailyScrape() {
 		console.log("scraped at " + scrapeDate);
 	})
 }
-
-dailyScrape();
+/*
+dailyScrape();*/
 
 let CronJob = require('cron').CronJob;
 new CronJob('45 * * * *', function() {
