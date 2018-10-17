@@ -52,7 +52,7 @@ function dailyScrape() {
 		        .then((playerURLsObj) => {
 		            stats = formatter.format(jsonObj, advJsonObj, playerURLsObj); //reassign stats to newly scraped and formatted stats
 		            console.log("writting file");
-		             fs.writeFileSync("./formattedStatsObject.js", `let formattedStatsObjectJSON = ${JSON.stringify(stats)}\n module.exports = formattedStatsObjectJSON`, function(err) {
+		             fs.writeFileSync("./testFile.js", `let formattedStatsObjectJSON = ${JSON.stringify(stats)}\n module.exports = formattedStatsObjectJSON`, function(err) {
                 			if(err){
                     			console.log(err);
                 			};
