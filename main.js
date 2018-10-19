@@ -16,6 +16,11 @@ const advCsvFilePath = './stats/Advplayers.csv';
 const playerURLs = './stats/URLplayers.csv';
 const csv = require('csvtojson');
 
+//s3 storage
+const aws = require('aws-sdk');
+const S3_BUCKET = process.env.S3_BUCKET;
+aws.config.region = 'us-east-1';
+
 dailyScrape(); //set json object to most updated stats when the server is spun up
 
 //create server
@@ -68,3 +73,6 @@ let CronJob = require('cron').CronJob;
 new CronJob('05,30 * * * *', function() {
 	dailyScrape();
 }, null, true, 'America/Denver');
+
+
+
