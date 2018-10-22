@@ -24,7 +24,7 @@ aws.config.update({ accessKeyId: process.env.AWS_ACCESS_KEY_ID, secretAccessKey:
 dailyScrape(); 
 
 //create server
-http.createServer(function(req, res) { //how do i make sure this grabs the stats from S3 everyday and doesn't just stay running? The only thing triggering this right now is the heroku resets 
+http.createServer(function(req, res) { //make this a callable function to run after dailyscrape to make sure updates are had. 
 		const s3 = new aws.S3()
 		s3.getObject({
 			Bucket: "quickstatsbacknbadatabucket", 
@@ -92,6 +92,6 @@ function dailyScrape() {
 }
 
 let CronJob = require('cron').CronJob;
-new CronJob('05,30 * * * *', function() {
+new CronJob('55 * * * *', function() {
 	dailyScrape();
 }, null, true, 'America/Denver');
