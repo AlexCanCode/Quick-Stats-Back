@@ -67,7 +67,8 @@ function dailyScrape() {
 		        csv()
 		        .fromFile(playerURLs)
 		        .then((playerURLsObj) => {
-		            let s3 = new aws.S3();
+		        	const stats = formatter.format(jsonObj, advJsonObj, playerURLsObj); //reassign stats to newly scraped and formatted stats
+		            const s3 = new aws.S3();
 		            s3.putObject({
 		            	Bucket: "quickstatsbacknbadatabucket",
 		            	Key: 'nbaCurrentPlayerData', 
