@@ -1,7 +1,6 @@
 'use strict' 
 //for server
 const http = require('http');
-let stats = require('./formattedStatsObject.js'); //need to change this everytime dailyScrape runs..
 const port = process.env.PORT || 3000; //CHANGE BACK TO 8080? 
 
 //for scraping job
@@ -20,15 +19,28 @@ const csv = require('csvtojson');
 const aws = require('aws-sdk');
 const S3_BUCKET = process.env.S3_BUCKET;
 aws.config.region = 'us-east-1';
+aws.config.update({ accessKeyId: process.env.AWS_ACCESS_KEY_ID, secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY }); 
 
-dailyScrape(); //set json object to most updated stats when the server is spun up
+dailyScrape(); 
 
 //create server
-http.createServer(function(req, res) {
-	res.statusCode = 200;
-	res.setHeader('Content-Type', 'application/json');
-	res.write(JSON.stringify(stats));
-	res.end()
+http.createServer(function(req, res) { //how do i make sure this grabs the stats from S3 everyday and doesn't just stay running? The only thing triggering this right now is the heroku resets 
+		const s3 = new aws.S3()
+		s3.getObject({
+			Bucket: "quickstatsbacknbadatabucket", 
+			Key: "nbaCurrentPlayerData"
+		}, function (err, data) {
+			if(err){
+				console.log(err)
+			}
+			else {
+				let s3Stats = JSON.parse(data.Body.toString());
+				res.statusCode = 200;
+				res.setHeader('Content-Type', 'application/json');
+				res.write(JSON.stringify(s3Stats));
+				res.end()
+			}
+		})
 }).listen(port, function() {
 	console.log("server started");
 });
@@ -55,17 +67,26 @@ function dailyScrape() {
 		        csv()
 		        .fromFile(playerURLs)
 		        .then((playerURLsObj) => {
-		            stats = formatter.format(jsonObj, advJsonObj, playerURLsObj); //reassign stats to newly scraped and formatted stats
-		            console.log(stats);
-		             fs.writeFile("formattedStatsObject.js", `let formattedStatsObjectJSON = ${JSON.stringify(stats)}\n module.exports = formattedStatsObjectJSON`, function(err, data) {
-                			if(err){
-                    			console.log(err);
-                			}
-            			});
-		        	});
-		    	});
-			});
-		console.log("scraped at " + scrapeDate);
+		            let s3 = new aws.S3();
+		            s3.putObject({
+		            	Bucket: "quickstatsbacknbadatabucket",
+		            	Key: 'nbaCurrentPlayerData', 
+		            	Body: JSON.stringify(stats),
+		            	ContentType: "application/json"
+		            }, 
+		            function (err, data) {
+		            	if(err){
+		            		console.log(err)
+		            	}
+		            	else {
+		            		console.log(data)
+		            	}
+		            }
+		            )
+		        });
+		    });
+		});
+		console.log("scraped and uploaded on/at  " + scrapeDate);
 	})
 }
 
@@ -73,6 +94,3 @@ let CronJob = require('cron').CronJob;
 new CronJob('05,30 * * * *', function() {
 	dailyScrape();
 }, null, true, 'America/Denver');
-
-
-
