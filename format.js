@@ -8,7 +8,7 @@
 
 4. Remove duplicates
 
-5. Add in team names for duplicate players (UNFINISHED)
+5. Add in team names for duplicate players
 
 6. formattedStatsJSON --> no duplicates, ready to be hashed and searched (requires team names to be added back in for "tot" players)*/
 
@@ -48,7 +48,7 @@ function format(arr, advArr, urlArr) {
         delete player["2P%"];
         delete player["3P"];
         delete player["3PA"];
-        delete player["3P%"];
+        // delete player["3P%"]; 
         delete player["BLK"];
         delete player["DRB"];
         delete player["FG"];
