@@ -10,7 +10,11 @@
 
 5. Add in team names for duplicate players
 
-6. formattedStatsJSON --> no duplicates, ready to be hashed and searched (requires team names to be added back in for "tot" players)*/
+6. formattedStatsJSON --> no duplicates, ready to be hashed and searched (requires team names to be added back in for "tot" players)
+
+7. [Not Yet Implemented] - Create list of special name players and map them to existing names and have them inserted into the hash table
+
+*/
 
 //Convert stats file from csv to JSON 
 
