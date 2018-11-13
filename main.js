@@ -92,6 +92,6 @@ function dailyScrape() {
 }
 
 let CronJob = require('cron').CronJob;
-new CronJob('00 03 * * *', function() {
+new CronJob('00 04 * * *', function() {
 	dailyScrape();
 }, null, true, 'America/Denver');
