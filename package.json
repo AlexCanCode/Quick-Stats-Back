@@ -5,7 +5,7 @@
   "main": "/main.js",
   "scripts": {
     "start": "node main.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha"
   },
   "author": "Alex Richards",
   "license": "UNLICENSED",
@@ -13,9 +13,12 @@
     "aws-sdk": "^2.337.0",
     "cron": "^1.4.1",
     "csvtojson": "^2.0.8",
-    "python-shell": "^1.0.6"
+    "loadtest": "^3.0.4",
+    "python-shell": "^1.0.6",
+    "rewire": "^4.0.1"
   },
   "engines": {
     "node": "8.12.0"
-  }
+  },
+  "devDependencies": {}
 }
