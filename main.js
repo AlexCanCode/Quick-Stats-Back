@@ -1,7 +1,7 @@
 'use strict' 
 //for server
 const http = require('http');
-const port = process.env.PORT || 3000; //CHANGE BACK TO 8080? 
+const port = process.env.PORT || 3000; 
 
 //for scraping job
 const fs = require('fs'); 
