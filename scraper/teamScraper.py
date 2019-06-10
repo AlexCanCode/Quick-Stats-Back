@@ -2,6 +2,8 @@ import time
 import csv
 import requests
 from bs4 import BeautifulSoup
+# For dealing with commented code
+import re
 
 # url = 'https://www.basketball-reference.com/contracts/'
 # response = requests.get(url)
@@ -31,16 +33,27 @@ from bs4 import BeautifulSoup
 
 # time.sleep(10);
 
-standUrl = 'https://www.basketball-reference.com/leagues/NBA_2019_standings.html'
-standResponse = requests.get(standUrl)
-standHtml = standResponse.content
+# The standings table is commented out in the DOM before the actual HTML
+# This is why it returns as None
+# https://stackoverflow.com/questions/39602223/beautifulsoup-webscraper-issue-cant-find-certain-divs-tables
 
-standSoup = BeautifulSoup(standHtml, 'html.parser')
-standTable = standSoup.find('table', {'id': 'expanded_standings'})
+comm = re.compile("<!--|-->")
+def make_soup(url):
+	standResponse = requests.get(url)		
+	standHtml = standResponse.content
+	soupdata = BeautifulSoup(comm.sub("", standHtml.decode('utf-8'), 'html.parser'))
+	return soupdata
 
-print(standTable)
+def get_player_totals():
+    soup = make_soup("https://www.basketball-reference.com/leagues/NBA_2019_standings.html")
 
-tbody = standTable.find('tbody')
+    standTable = soup.find('table', {'id':'expanded_standings'})
+
+    return standTable
+
+x = get_player_totals()
+
+print(x)
 
 list_of_rows = []
 for row in tbody.findAll('tr'):
