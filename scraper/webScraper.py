@@ -3,7 +3,7 @@ import csv
 import requests
 from bs4 import BeautifulSoup
 
-url = 'https://www.basketball-reference.com/leagues/NBA_2019_per_game.html'
+url = 'https://www.basketball-reference.com/leagues/NBA_2020_per_game.html'
 response = requests.get(url)
 html = response.content
 
