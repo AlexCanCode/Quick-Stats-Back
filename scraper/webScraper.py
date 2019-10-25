@@ -27,7 +27,7 @@ writer.writerows(clean_list_of_rows)
 
 time.sleep(10);
 
-adUrl = 'https://www.basketball-reference.com/leagues/NBA_2019_advanced.html'
+adUrl = 'https://www.basketball-reference.com/leagues/NBA_2020_advanced.html'
 Adresponse = requests.get(adUrl)
 Adhtml = Adresponse.content
 
@@ -51,7 +51,7 @@ Adwriter.writerows(clean_list_of_rows)
 
 time.sleep(10);
 
-url = 'https://www.basketball-reference.com/leagues/NBA_2019_per_game.html'
+url = 'https://www.basketball-reference.com/leagues/NBA_2020_per_game.html'
 response = requests.get(url)
 html = response.content
 
