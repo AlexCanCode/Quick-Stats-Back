@@ -3,6 +3,7 @@ import csv
 import requests
 from bs4 import BeautifulSoup
 
+# change every year or make dynamic?
 url = 'https://www.basketball-reference.com/leagues/NBA_2021_per_game.html'
 response = requests.get(url)
 html = response.content
