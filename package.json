@@ -10,7 +10,7 @@
   "author": "Alex Richards",
   "license": "UNLICENSED",
   "dependencies": {
-    "aws-sdk": "^2.337.0",
+    "aws-sdk": "^2.1354.0",
     "cron": "^1.4.1",
     "csvtojson": "^2.0.8",
     "loadtest": "^3.0.4",
