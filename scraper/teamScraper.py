@@ -45,7 +45,7 @@ def make_soup(url):
 	return soupdata
 
 def get_player_totals():
-    soup = make_soup("https://www.basketball-reference.com/leagues/NBA_2023_standings.html")
+    soup = make_soup("https://www.basketball-reference.com/leagues/NBA_2024_standings.html")
 
     standTable = soup.find('table', {'id':'expanded_standings'})
 
